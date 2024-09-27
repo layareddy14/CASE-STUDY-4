@@ -1,0 +1,37 @@
+
+To provision an AWS S3 bucket for shared storage across three EC2 instances in different availability zones, with each EC2 instance having Docker installed, you can use Terraform as your Infrastructure as Code (IaC) tool. Below are the detailed steps and the complete code to accomplish this from scratch.
+
+Summary
+VPC and Subnets: Set up a VPC with subnets in different availability zones.
+Security Group: Created a security group to allow SSH access.
+S3 Bucket: Created an S3 bucket for shared storage.
+EC2 Instances: Provisioned EC2 instances in different subnets, configured with Docker and IAM roles for S3 access.
+IAM Role: Configured IAM roles to allow EC2 instances to access the S3 bucket.
+
+Step 4: Access the EC2 Instances and Mount S3
+After the infrastructure is deployed, you can access the EC2 instances using their public IP addresses.
+
+You will need to install and configure a tool to mount S3 as a filesystem on the EC2 instances. One popular option is to use s3fs, which allows you to mount S3 buckets as file systems.
+
+SSH into each EC2 instance and run:
+
+bash
+Copy code
+sudo yum install -y s3fs-fuse
+Then, create a directory to mount the S3 bucket:
+
+bash
+Copy code
+mkdir /mnt/shared
+Mount the S3 bucket:
+
+bash
+Copy code
+s3fs my-shared-storage-bucket /mnt/shared -o iam_role=ec2_s3_role
+Summary
+VPC and Subnets: Created a VPC with three subnets in different availability zones.
+Security Group: Configured a security group to allow SSH access.
+S3 Bucket: Created an S3 bucket for shared storage.
+IAM Role and Policy: Configured IAM roles to allow EC2 instances to access the S3 bucket.
+EC2 Instances: Provisioned EC2 instances with Docker installed in different availability zones.
+This setup provides a shared storage solution across your EC2 instances, using AWS S3 as the backend storage. You can now further develop your application to utilize the shared storage.
